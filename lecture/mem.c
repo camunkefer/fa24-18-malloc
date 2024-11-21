@@ -34,12 +34,19 @@ void* my_malloc(size_t size) {
       // GOAL: split up the block into the malloc'd part and the free part 
       // Round up size to next multiple of 8
       size_t rounded = ((size + 7) / 8) * 8;
-      *current = rounded + 1; // rounds up and sets the "busy" bit
-
-      // what if remaining is close to 0/8/16, etc
-      size_t remaining = cur_size - (rounded + VAL_SIZE);
-      uint64_t* remaining_ptr = current + (rounded / VAL_SIZE) + 1;
-      *remaining_ptr = remaining;
+      
+      if(cur_size >= (rounded + VAL_SIZE +16){
+        // what if remaining is close to 0/8/16, etc
+        size_t remaining = cur_size - (rounded + VAL_SIZE);
+        uint64_t* remaining_ptr = current + (rounded / VAL_SIZE) + 1;
+        *remaining_ptr = remaining;
+        *current = rounded + 1; // rounds up and sets the "busy" bit
+                                //when splitting a block, split by
+                                //the ammount the user requested
+      }
+      else{
+        *current += 1;
+      }
 
       return current + 1;
     }
